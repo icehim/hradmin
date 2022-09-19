@@ -24,7 +24,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -36,7 +36,17 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/xxx': {
+        // target会拼接/xxx，最终使用的基地址：http://119.91.150.211:3000/api/xxx
+        target: 'http://119.91.150.211:3000/api',
+        pathRewrite: {
+          // 去掉/xxx
+          '^/xxx': ''
+        }
+      }
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -76,6 +86,7 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
+        // [name] 就是通过loader加载的文件的文件名
         symbolId: 'icon-[name]'
       })
       .end()
