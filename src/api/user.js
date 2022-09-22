@@ -15,3 +15,9 @@ export function sysProfile() {
     method: 'post'
   })
 }
+// 获取用户其他信息包括头像
+export function sysUser(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
+}

@@ -8,10 +8,10 @@
       人力后台
     </div>
     <div class="navbar-user">
-      <el-dropdown @commond="commandEvent">
+      <el-dropdown @command="commandEvent">
         <span class="menu">
-          <img class="avatar" src="@/assets/common/head.jpg" alt="">
-          <span>管理员</span>
+          <img class="avatar" :src="userInfo.staffPhoto" alt="">
+          <span>{{ userInfo.username }}</span>
           <i class="el-icon-arrow-down el-icon--right" />
         </span>
         <template #dropdown>
@@ -35,7 +35,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('app', ['sidebar'])
+    ...mapState('app', ['sidebar']),
+    ...mapState('user', ['userInfo'])
   },
   methods: {
     ...mapActions('app', ['toggleSideBar']),
@@ -46,6 +47,35 @@ export default {
           break
         case 'exit':
           console.log('退出用户登录')
+          /*
+          * 1.弹出确定框
+          *   this.$confirm('提示内容','提示标题',{
+          *     cancelButtonText:'取消按钮文本',
+          *     confirmButtonText:'确认按钮文本',
+          *     type:'warning...'
+          *   }).then((
+          *       // 点击确定后执行的处理
+          *     )=>{
+          *     //点击取消后的处理
+          * })
+          * 2.点击确定后
+          *   删除token
+          *   删除用户信息
+          *   提示
+          *   跳转到登录页
+          *  */
+          this.$confirm('您确定退出嘛？', '温馨提示')
+            .then(() => {
+              // 点击确定后执行的处理
+              // 删除token
+              // 删除用户信息
+              this.$store.commit('user/logout')
+              this.$message.success('退出成功')
+              this.$router.push('/login')
+            })
+            .catch(() => {
+              // 点击取消后的处理
+            })
           break
       }
     }

@@ -6,7 +6,7 @@
 * 设置：set(key,value)
 * 删除:remove(key)
 *  */
-import { sysLogin, sysProfile } from '@/api/user'
+import { sysLogin, sysProfile, sysUser } from '@/api/user'
 // import { getToken, setToken } from '@/utils/auth'
 const state = {
   token: '',
@@ -59,8 +59,16 @@ const actions = {
   },
   async getUserInfo(store) {
     const res = await sysProfile()
-    store.commit('setUserInfo', res.data)
-    console.log(res)
+    // 获取员工其他信息包括头像
+    const res2 = await sysUser(res.data.userId)
+    /*
+    * 对象合并:
+    *   a,b ===>[...a,...b]
+    *   返回一个新对象（目标对象）=Object.assign(目标对象，需要合并的对象1,需要合并的对象2,...)
+    *  */
+    console.log(res2)
+    // store.commit('setUserInfo', { ...res.data, ...res2.data })
+    store.commit('setUserInfo', Object.assign({}, res.data, res2.data))
   }
 }
 const getters = {}
