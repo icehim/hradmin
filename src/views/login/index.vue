@@ -12,7 +12,7 @@
           <!--this.$emit('方法名')-->
         </el-form-item>
         <el-form-item>
-          <el-button style="width: 100%; background:#407ffe" @click="submit">登录</el-button>
+          <el-button style="width: 100%; background:#407ffe" :loading="loading" @click="submit">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -23,6 +23,7 @@
 export default {
   data() {
     return {
+      loading: false,
       form: {
         mobile: '',
         password: ''
@@ -53,10 +54,16 @@ export default {
   methods: {
     // 全局触发表单验证
     submit() {
-      this.$refs.form.validate((result) => {
+      this.$refs.form.validate(async(result) => {
         if (result) {
-          this.$store.dispatch('user/toLogin', this.form)
-          console.log('验证成功')
+          this.loading = true
+          try {
+            await this.$store.dispatch('user/toLogin', this.form)
+            this.loading = false
+            this.$router.push('/')
+          } catch {
+            this.loading = false
+          }
         } else {
           console.log('验证失败')
         }

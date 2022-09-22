@@ -42,7 +42,7 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-
+  // 单层菜单：1.他的children内hidden为false的项只有一项才能渲染，有多项要将其他项加上hidden:true
   {
     path: '/',
     component: Layout,
@@ -50,9 +50,23 @@ export const constantRoutes = [
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
+      // hidden: true, // 是否菜单渲染
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      // 路由元
+      meta: { title: '仪表盘', icon: 'dashboard' }
     }]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: '', // 相对地址，不以“/”开头，相对地址相对于父级，绝对地址：以自己path为主
+        name: 'user',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '员工', icon: 'user' }
+      }
+    ]
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

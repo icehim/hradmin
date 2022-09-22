@@ -2,7 +2,9 @@ import Cookies from 'js-cookie'
 
 const state = {
   sidebar: {
+    // 控制菜单是否展开
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    // 是否使用动画
     withoutAnimation: false
   },
   device: 'desktop'

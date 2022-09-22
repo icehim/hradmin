@@ -19,6 +19,9 @@ import router from './router'
 import '@/icons' // 引入icon图标
 import '@/permission' // 引入导航守卫
 
+import useTest from '@/components/test/useTest'
+Vue.use(useTest, 123)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

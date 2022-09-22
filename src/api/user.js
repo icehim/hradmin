@@ -8,3 +8,10 @@ export function sysLogin(data) {
     data
   })
 }
+// 获取用户信息
+export function sysProfile() {
+  return request({
+    url: '/sys/profile',
+    method: 'post'
+  })
+}

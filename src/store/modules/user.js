@@ -6,15 +6,23 @@
 * 设置：set(key,value)
 * 删除:remove(key)
 *  */
-import { sysLogin } from '@/api/user'
-import { getToken, setToken } from '@/utils/auth'
+import { sysLogin, sysProfile } from '@/api/user'
+// import { getToken, setToken } from '@/utils/auth'
 const state = {
-  token: getToken() || ''
+  token: '',
+  userInfo: ''
 }
 const mutations = {
   setToken(state, value) {
     state.token = value
-    setToken(value)
+    // setToken(value)
+  },
+  setUserInfo(state, value) {
+    state.userInfo = value
+  },
+  logout(state) {
+    state.token = ''
+    state.userInfo = ''
   }
 }
 const actions = {
@@ -48,6 +56,11 @@ const actions = {
       *  */
     // Message.error(res.message)
     // }
+  },
+  async getUserInfo(store) {
+    const res = await sysProfile()
+    store.commit('setUserInfo', res.data)
+    console.log(res)
   }
 }
 const getters = {}

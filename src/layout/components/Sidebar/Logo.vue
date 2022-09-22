@@ -1,13 +1,14 @@
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
+    <!--动画必备条件:进入或者离开动作（v-if/v-show）-->
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+        <!--        <h1 v-else class="sidebar-title">{{ title }} </h1>-->
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+        <!--        <h1 class="sidebar-title">{{ title }} </h1>-->
       </router-link>
     </transition>
   </div>
@@ -25,7 +26,9 @@ export default {
   data() {
     return {
       title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      // logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: require('@/assets/common/logo.png')
+      // 如果使用变量存储图片路径，如果路径是相对地址(或者使用本地图片)=>加上require，底层会通过webpack的loader进行打包转换，转换完成才可以正常使用
     }
   }
 }
@@ -44,9 +47,9 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
+  height: 60px;
+  line-height: 60px;
+  //background-color: #5a8bff;
   text-align: center;
   overflow: hidden;
 
@@ -55,10 +58,13 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 100%;
+      height: 80%;
       vertical-align: middle;
       margin-right: 12px;
+
+      //object-fit: cover/contain;  cover保持比例，如果超出裁切，contain：保持比例完整显示
+      object-fit: contain;
     }
 
     & .sidebar-title {

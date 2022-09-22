@@ -4,7 +4,7 @@ import getters from './getters'
 import app from './modules/app'
 import settings from './modules/settings'
 import user from '@/store/modules/user'
-
+import persistedstate from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -13,7 +13,12 @@ const store = new Vuex.Store({
     settings,
     user
   },
-  getters
+  getters,
+  plugins: [
+    persistedstate({
+      paths: ['user.token']
+    })
+  ]
 })
 
 export default store

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'has-logo':showLogo}">
+  <div :class="{'has-logo':showLogo}" class="sidebar">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
@@ -54,3 +54,44 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+  .sidebar {
+    background-color: #5282fd!important;
+    background-image: url("~@/assets/common/leftnavBg.png");
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+
+    .el-menu {
+      border: none;
+      height: 100%;
+      width: 100% !important;
+
+      ::v-deep a {
+        &.router-link-exact-active,
+        &:hover {
+          .svg-icon {
+            color: #43a7fe;
+          }
+          span {
+            color: #43a7fe;
+          }
+          background-color: #fff;
+        }
+        li {
+          .svg-icon {
+            color: #fff;
+            font-size: 18px;
+            vertical-align: middle;
+            .icon {
+              color: #fff;
+            }
+          }
+          span {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+</style>
