@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-test:aaa.bbb="ccc">
+    <input type="text" v-focus>
+  </div>
+
+  <script src="./vue.js"></script>
+<script>
+  new Vue({
+    el:'#app',
+    data:{
+      ccc:'我是自定义指令',
+      bol:true,
+      num:0
+    },
+    directives:{
+      test:{
+        bind(dom,obj,vnode){
+          console.log('bind：',dom,obj,vnode)
+        },
+        inserted(dom,obj,vnode){
+          console.log('inserted：',dom,obj,vnode)
+        },
+        update(dom,obj,vnode){
+          console.log('inserted',dom,obj,vnode)
+        },
+        componentUpdated(dom,obj,vnode){
+          console.log('componentUpdated:',dom,obj,vnode)
+        },
+        unbind(dom,obj,vnode){
+          console.log('unbind:',dom,obj,vnode)
+        },
+      },
+      focus:{
+        bind(dom, obj, vnode) {
+          dom.focus()
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

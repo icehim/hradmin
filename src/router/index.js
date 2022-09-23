@@ -57,16 +57,100 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/user',
+    path: '/departments',
     component: Layout,
-    children: [
-      {
-        path: '', // 相对地址，不以“/”开头，相对地址相对于父级，绝对地址：以自己path为主
-        name: 'user',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '员工', icon: 'user' }
-      }
-    ]
+    children: [{
+      path: '',
+      name: 'departments',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/departments/index'),
+      // 路由元
+      meta: { title: '组织架构', icon: 'tree' }
+    }]
+  },
+  {
+    path: '/employees',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'employees',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/employees/index'),
+      // 路由元
+      meta: { title: '员工', icon: 'people' }
+    }]
+  },
+  {
+    path: '/setting',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'setting',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/setting/index'),
+      // 路由元
+      meta: { title: '公司设置', icon: 'setting' }
+    }]
+  },
+  {
+    path: '/salarys',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'salarys',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/salarys/index'),
+      // 路由元
+      meta: { title: '工资', icon: 'money' }
+    }]
+  },
+  {
+    path: '/social',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'social',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/social/index'),
+      // 路由元
+      meta: { title: '社保', icon: 'table' }
+    }]
+  },
+  {
+    path: '/attendances',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'attendances',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/attendances/index'),
+      // 路由元
+      meta: { title: '考勤', icon: 'skill' }
+    }]
+  },
+  {
+    path: '/approvals',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'approvals',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/approvals/index'),
+      // 路由元
+      meta: { title: '审批', icon: 'tree-table' }
+    }]
+  },
+  {
+    path: '/permission',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'approvals',
+      // hidden: true, // 是否菜单渲染
+      component: () => import('@/views/permission/index'),
+      // 路由元
+      meta: { title: '权限管理', icon: 'lock' }
+    }]
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

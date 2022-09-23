@@ -20,8 +20,17 @@ import '@/icons' // 引入icon图标
 import '@/permission' // 引入导航守卫
 
 import useTest from '@/components/test/useTest'
-Vue.use(useTest, 123)
+import directives from '@/directives'
 
+Vue.use(useTest, 123)
+// 对象循环
+// for (const key in directives) {
+//   Vue.directive(key, directives[key])
+// }
+
+Object.keys(directives).forEach(item => {
+  Vue.directive(item, directives[item])
+})
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -35,7 +44,22 @@ Vue.use(useTest, 123)
 //   const { mockXHR } = require('../mock')
 //   mockXHR()
 // }
-
+// Vue.directive('globalImageError', {
+//   bind() {},
+//   inserted(dom, obj) {
+//     dom.src = dom.src || obj.value
+//     dom.onerror = () => {
+//       dom.src = obj.value
+//     }
+//   },
+//   update() {},
+//   componentUpdated(dom, obj) {
+//     dom.src = dom.src || obj.value
+//   },
+//   unbind(dom) {
+//     dom.onerror = null
+//   }
+// })
 // set ElementUI lang to EN
 Vue.use(ElementUI)
 // 如果想要中文版 element-ui，按如下方式声明

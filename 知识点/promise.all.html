@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <script>
+    //1~3个接口，希望前三个请求完成后请求第四个
+    // function fn(id) {
+    //   return new Promise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //       resolve(id)
+    //     },1000)
+    //   })
+    // }
+    // fn(1),fn(2),fn(3)
+    // Promise.all([promise方法,...]).then(res=>{[方法1返回值,方法2返回值...]}).catch(err=>{只要有一个接口执行失败,立马.catch执行，只返回该接口出错的err})
+    // fn(1).then(res=>{
+    //   console.log(res)
+    // }
+    // Promise.all([fn(1),fn(2),fn(3)]).then(res=>{
+    //   console.log(res)
+    //   fn(4)
+    // })
+
+    //1~3个接口，希望前三个请求完成后请求第四个,如果其中有一个接口出错，立马执行.catch，只返回出错的哪个接口信息
+    // 如果出错了，也要拿到所有的值，怎么处理
+
+    function fn(id) {
+      const p =  new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+          reject(id)
+        },1000)
+      })
+      return p.catch(err=>err)
+    }
+    Promise.all([fn(1),fn(2),fn(3)])
+      .then(res=>{
+      console.log(res)
+      })
+      .catch(err=>{
+        console.log('err:',err)
+      })
+
+    //promise.race([promise方法1,promise方法2]).then(res=>{谁先执行完，返回谁的值}).catch(err=>{})
+  </script>
+</body>
+</html>

@@ -50,7 +50,8 @@ _axios.interceptors.response.use(
     *  */
     if (error.response.status === 401) {
       store.commit('user/logout')
-      router.push('/login')
+      // token失效跳转登陆页面时，也要传入地址
+      router.push('/login?redirect=' + window.location.href.split('#')[1])
       Message.error('登录失效')
     }
     return Promise.reject(error)

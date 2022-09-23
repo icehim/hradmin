@@ -10,7 +10,8 @@
     <div class="navbar-user">
       <el-dropdown @command="commandEvent">
         <span class="menu">
-          <img class="avatar" :src="userInfo.staffPhoto" alt="">
+          <!--使用自定义指定解决图片出错问题，同时默认图片可以自定义指定-->
+          <img v-global-image-error="defaultImg" :src="userInfo.staffPhoto" class="avatar" alt="">
           <span>{{ userInfo.username }}</span>
           <i class="el-icon-arrow-down el-icon--right" />
         </span>
@@ -29,15 +30,36 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
+  // 局部自定义指令
+  directives: {
+    imgerror: {
+      bind() {},
+      inserted(dom, obj) {
+        dom.src = dom.src || obj.value
+        dom.onerror = () => {
+          dom.src = obj.value
+        }
+      },
+      update() {},
+      componentUpdated(dom, obj) {
+        dom.src = dom.src || obj.value
+      },
+      unbind(dom) {
+        dom.onerror = null
+      }
+    }
+  },
+
   data() {
     return {
-      key: 'value'
+      defaultImg: require('@/assets/common/head.jpg')
     }
   },
   computed: {
     ...mapState('app', ['sidebar']),
     ...mapState('user', ['userInfo'])
   },
+
   methods: {
     ...mapActions('app', ['toggleSideBar']),
     commandEvent(command) {
@@ -71,7 +93,8 @@ export default {
               // 删除用户信息
               this.$store.commit('user/logout')
               this.$message.success('退出成功')
-              this.$router.push('/login')
+              // 退出登陆时，传入回跳地址
+              this.$router.push('/login?redirect=' + this.$route.fullPath) // fullPath带参数的path地址
             })
             .catch(() => {
               // 点击取消后的处理

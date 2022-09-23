@@ -60,7 +60,9 @@ export default {
           try {
             await this.$store.dispatch('user/toLogin', this.form)
             this.loading = false
-            this.$router.push('/')
+            // 登录时如果有回跳地址，就跳入回跳地址，如果没有就跳入首页
+            const redirect = this.$route.query.redirect || '/'
+            this.$router.push(redirect)
           } catch {
             this.loading = false
           }

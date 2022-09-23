@@ -38,7 +38,8 @@ router.beforeEach(async(to, from, next) => {
     if (whitePage.includes(to.path)) {
       next()
     } else {
-      next('/login')
+      // 跳转登陆页面时传入回跳地址
+      next('/login?redirect=' + to.fullPath)
     }
   }
   Nprogress.done()
