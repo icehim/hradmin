@@ -21,3 +21,4 @@ export function sysUser(id) {
     url: `/sys/user/${id}`
   })
 }
+

@@ -27,17 +27,10 @@ export default {
   data() {
     return {
       topInfo: {
-        name: '教育',
-        manager: '校长'
+        name: '',
+        manager: '负责人'
       },
-      treeData: [{
-        name: '市场部',
-        manager: '部长',
-        children: [{
-          name: '北京事业部',
-          manager: '部长2'
-        }]
-      }]
+      treeData: []
     }
   },
   created() {
@@ -46,7 +39,17 @@ export default {
   methods: {
     async getData() {
       const res = await companyDepartment()
-      this.treeData = res.data.depts
+      this.topInfo.name = res.data.companyName
+      console.log(res)
+      this.treeData = this.changeData(res.data.depts, '')
+    },
+    changeData(arr, pid = '') {
+      return arr.filter(item => {
+        if (item.pid === pid) {
+          item.children = this.changeData(arr, item.id)
+          return true
+        }
+      })
     }
   }
 
