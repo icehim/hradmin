@@ -23,7 +23,7 @@ export default {
     },
     obj: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
   methods: {
