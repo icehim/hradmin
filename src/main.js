@@ -20,6 +20,7 @@ import '@/icons' // 引入icon图标
 import '@/permission' // 引入导航守卫
 
 import useTest from '@/components/test/useTest'
+// 全局自定义指令
 import directives from '@/directives'
 
 Vue.use(useTest, 123)
@@ -62,6 +63,9 @@ Object.keys(directives).forEach(item => {
 // })
 // set ElementUI lang to EN
 Vue.use(ElementUI)
+// 兄弟组件传值
+Vue.prototype.$bus = new Vue()
+
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 

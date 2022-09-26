@@ -35,7 +35,7 @@ const actions = {
     //   })
 
     const res = await sysLogin(value)
-    console.log(res)
+    // console.log(res)
     commit('setToken', res.data)
 
     // console.log(res)
@@ -66,7 +66,7 @@ const actions = {
     *   a,b ===>[...a,...b]
     *   返回一个新对象（目标对象）=Object.assign(目标对象，需要合并的对象1,需要合并的对象2,...)
     *  */
-    console.log(res2)
+    // console.log(res2)
     // store.commit('setUserInfo', { ...res.data, ...res2.data })
     store.commit('setUserInfo', Object.assign({}, res.data, res2.data))
   }

@@ -5,3 +5,9 @@ export function companyDepartment() {
     url: '/company/department'
   })
 }
+// 获取员工列表
+export function sysUserSimple() {
+  return request({
+    url: '/sys/user/simple'
+  })
+}
