@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-dialog title="新增部门" width="500px" :visible.sync="isShow">
+    <!--@close：在点击关闭的X按钮时执行，同时在visible对应的值为false时也会执行-->
+    <el-dialog title="新增部门" width="500px" :visible.sync="isShow" @close="closeEvent">
       <!--表单验证
     基本需求:必填、长度1~50
     1. el-form 绑定model，rules,ref
@@ -53,7 +54,7 @@
 </template>
 
 <script>
-import { sysUserSimple } from '@/api/departments'
+import { sysUserSimple, companyDepartmentPost } from '@/api/departments'
 export default {
   props: {
     initList: {
@@ -76,9 +77,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '必填', trigger: 'change' },
-          {
-            min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change'
-          },
+          { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' },
           {
             // 自定义表单验证
             // 当前点击项的子兄弟节点不能有同名的
@@ -102,31 +101,61 @@ export default {
           }
         ], // string	非必须		部门名称
         code: [
-          { required: true, message: '必填', trigger: 'change' }, {
-            min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change'
+          { required: true, message: '必填', trigger: 'change' },
+          { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' },
+          { // 所有项进行code对比m,不可重复
+            validator: (rule, value, callback) => {
+              const bol = this.initList.some(i => {
+                return i.code === value
+              })
+              bol ? callback(new Error('请不要输入重复code编码：' + value)) : callback()
+            }
           }
         ], // string 非必须		部门编码，同级部门不可重复
         manager: [
           { required: true, message: '必填', trigger: 'change' }
         ], // string	非必须		负责人名称
         introduce: [
-          { required: true, message: '必填', trigger: 'change' }, {
-            min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change'
-          }
+          { required: true, message: '必填', trigger: 'change' },
+          { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' }
         ], // string	非必须		介绍
         pid: [
-          { required: true, message: '必填', trigger: 'change' }, {
-            min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' }
+          { required: true, message: '必填', trigger: 'change' },
+          { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' }
         ] // string	非必须		父级部门ID
       }
     }
+  },
+  watch: {
+    /* 侦听器：某个值的change事件
+    *   watch:{
+    *   需要侦听的字段名不要加this
+    *   "需要侦听的字段名":{
+    *     handler(newVal,oldVal){
+    *       newVal:当前值
+    *       oldVal:修改上一刻的值
+    *     },
+    *     deep:true,
+    *     immediate:true 定义时就立刻执行handler，没改变就执行
+    *   }
+    * }
+    *
+    * */
+    // isShow: {
+    //   handler(newVal) {
+    //     if (!newVal) {
+    //       // 1.重置表单数据为初始值
+    //       // 2.移除校验结果
+    //       this.$refs.form.resetFields()
+    //     }
+    //   }
+    // }
   },
   mounted() {
     // 触发事件监听
     this.$bus.$on('addEvent', (show, item) => {
       this.isShow = show
       this.item = item
-      console.log(this.initList)
     })
   },
   beforeDestroy() {
@@ -147,11 +176,19 @@ export default {
     },
     // 确定点击
     submit() {
-      this.$refs.form.validate((result) => {
+      this.$refs.form.validate(async(result) => {
         if (result) {
-          this.$message.success('验证成功')
+          this.form.pid = this.item.id
+          await companyDepartmentPost(this.form)
+          this.isShow = false
+          // 刷新父级列表数据，触发父级方法
+          this.$emit('getData')
+          this.$message.success('添加成功')
         }
       })
+    },
+    closeEvent() {
+      this.$refs.form.resetFields()
     }
   }
 }

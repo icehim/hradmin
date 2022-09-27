@@ -9,10 +9,10 @@
         <hr>
         <el-tree :data="treeData" :props="{label:'name'}" default-expand-all>
           <template v-slot="{data}">
-            <TreeItem :item="data" style="width: 100%" />
+            <TreeItem :item="data" style="width: 100%" @getData="getData" />
           </template>
         </el-tree>
-        <Add :init-list="initList" />
+        <Add :init-list="initList" @getData="getData" />
       </div>
     </el-card>
   </div>
