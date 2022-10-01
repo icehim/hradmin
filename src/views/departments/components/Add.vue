@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--@close：在点击关闭的X按钮时执行，同时在visible对应的值为false时也会执行-->
-    <el-dialog title="新增部门" width="500px" :visible.sync="isShow" @close="closeEvent">
+    <el-dialog :title="{add:'新增部门',edit:'编辑部门'}[mode]" width="500px" :visible.sync="isShow" @close="closeEvent">
       <!--表单验证
     基本需求:必填、长度1~50
     1. el-form 绑定model，rules,ref
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { sysUserSimple, companyDepartmentPost } from '@/api/departments'
+import { sysUserSimple, companyDepartmentPost, companyDepartmentPut } from '@/api/departments'
 export default {
   props: {
     initList: {
@@ -64,6 +64,7 @@ export default {
   },
   data() {
     return {
+      mode: '', // ‘add’:新增 'edit'：编辑
       isShow: false,
       managerList: [],
       form: {
@@ -79,16 +80,28 @@ export default {
           { required: true, message: '必填', trigger: 'change' },
           { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' },
           {
-            // 自定义表单验证
-            // 当前点击项的子兄弟节点不能有同名的
-            // 有所有的树形列表数据,通过点击项的id找出他的子集，判断是否能和当前输入项重名
             validator: (rule, value, callback) => {
-              // 1.找出点击项的子集，initList:原始列表数据，当前点击项数据item
-              const resultArr = this.initList.filter(i => {
-                if (i.pid === this.item.id) {
-                  return true
-                }
-              })
+              // 自定义表单验证:【新增场景】
+              let resultArr = []
+              if (this.mode === 'add') {
+                // 当前点击项的子兄弟节点不能有同名的
+                // 有所有的树形列表数据,通过点击项的id找出他的子集，判断是否能和当前输入项重名
+                // 1.找出点击项的子集，initList:原始列表数据，当前点击项数据item
+                resultArr = this.initList.filter(i => {
+                  if (i.pid === this.item.id) {
+                    return true
+                  }
+                })
+              } else if (this.mode === 'edit') {
+                /* 【编辑场景】
+                 * 验证当前点击项的兄弟部门，并排除自己的部门名，不可重复
+                 *  */
+                resultArr = this.initList.filter(i => {
+                  if (i.pid === this.item.pid && i.id !== this.item.id) {
+                    return true
+                  }
+                })
+              }
               // 判断是否重名
               // some:数组中只要有一个项return true，他的返回值就是true
               // 返回值（boolean）= 数组.some(item=>{return boolean},只要有一个项为true，他的返回值就是true)
@@ -105,9 +118,19 @@ export default {
           { min: 1, max: 50, message: '请输入1~50个字符', trigger: 'change' },
           { // 所有项进行code对比m,不可重复
             validator: (rule, value, callback) => {
-              const bol = this.initList.some(i => {
-                return i.code === value
-              })
+              // 新增
+              let bol = false
+              if (this.mode === 'add') {
+                bol = this.initList.some(i => {
+                  return i.code === value
+                })
+              } else if (this.mode === 'edit') {
+                // 编辑
+                bol = this.initList.some(i => {
+                  // 当前点击项的id和所输入的部门编码的id相同时重复
+                  return i.code === value && i.id !== this.item.id
+                })
+              }
               bol ? callback(new Error('请不要输入重复code编码：' + value)) : callback()
             }
           }
@@ -152,10 +175,14 @@ export default {
     // }
   },
   mounted() {
-    // 触发事件监听
-    this.$bus.$on('addEvent', (show, item) => {
+    // 触发兄弟组件事件监听
+    this.$bus.$on('addEvent', (show, item, mode) => {
       this.isShow = show
       this.item = item
+      this.mode = mode
+      //  深拷贝(中断和以前的联系) JSON.parse(JSON.stringify(对象))，缺点:function/undefined  会受到影响
+      // 只有编辑时需要复制form
+      if (mode === 'edit') { this.form = JSON.parse(JSON.stringify(item)) }
     })
   },
   beforeDestroy() {
@@ -178,17 +205,32 @@ export default {
     submit() {
       this.$refs.form.validate(async(result) => {
         if (result) {
-          this.form.pid = this.item.id
-          await companyDepartmentPost(this.form)
+          if (this.mode === 'add') {
+            this.form.pid = this.item.id
+            await companyDepartmentPost(this.form)
+            this.$message.success('添加成功')
+          } else if (this.mode === 'edit') {
+            await companyDepartmentPut(this.form)
+            this.$message.success('编辑成功')
+          }
           this.isShow = false
           // 刷新父级列表数据，触发父级方法
           this.$emit('getData')
-          this.$message.success('添加成功')
         }
       })
     },
+    // 关闭时的回调
     closeEvent() {
+      // 重置表单数据为初始化数据【表单第一次渲染时的数据】，清除表单验证
       this.$refs.form.resetFields()
+      // 手动重置数据
+      this.form = {
+        name: '', // string	非必须		部门名称
+        code: '', // string 非必须		部门编码，同级部门不可重复
+        manager: '', // string	非必须		负责人名称
+        introduce: '', // string	非必须		介绍
+        pid: '' // string	非必须		父级部门ID
+      }
     }
   }
 }

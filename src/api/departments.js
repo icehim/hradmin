@@ -27,7 +27,7 @@ export function companyDepartmentDelete(id) {
     method: 'delete'
   })
 }// 编辑部门
-export function companyDepartmentUpdate(data) {
+export function companyDepartmentPut(data) {
   return request({
     url: '/company/department/' + data.id,
     method: 'put',
