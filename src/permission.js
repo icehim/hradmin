@@ -2,7 +2,7 @@ import router from '@/router'
 import store from '@/store'
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
-
+import { cancelAll } from '@/utils/request'
 const whitePage = ['/404', '/login']
 
 router.beforeEach(async(to, from, next) => {
@@ -45,4 +45,6 @@ router.beforeEach(async(to, from, next) => {
   Nprogress.done()
 })
 router.afterEach((to, from) => {
+  Nprogress.done()
+  cancelAll()
 })

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>el-Pagination(分页)</title>
+</head>
+<body>
+<div id="app">
+<!--
+  el-pagination
+    total:总数
+    page-sizes:页容量选项
+    page-size:默认页容量(当它在页面容量选项中不存在时会默认选中第一个选项)
+    current-page:默认页码
+    @size-change:页容量改变时触发function(size){size:当前的页容量}
+    @current-change:页码改变
+    layout="total, sizes, prev, pager, next, jumper"
+-->
+  <el-pagination
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="page.currentPage"
+    :page-sizes="[1,10,100, 200, 300, 400]"
+    :page-size="page.pagesize"
+    layout="total, sizes, prev, pager, next, jumper"
+    :total="page.total">
+  </el-pagination>
+</div>
+
+<script src="./vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+<script src="./element.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        page:{
+          total:100,
+          pagesize:10,
+          currentPage:1
+        }
+      }
+    },
+    methods: {
+      handleSizeChange(size){
+        this.page.pagesize = size
+        console.log('当前页容量',size,this.page)
+      },
+      handleCurrentChange(page){
+        this.page.currentPage = page
+        console.log('当前页',page,this.page)
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -13,12 +13,40 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store' // store === this.$store
 import router from '@/router' // router===this.$router
+let cancelArr = []
+
+// 取消所有请求
+export function cancelAll() {
+  cancelArr = cancelArr.filter((item) => {
+    item.fn()
+    return false
+  })
+}
 const _axios = axios.create({
   baseURL: process.env['VUE_APP_BASE_API']
 })
 
 _axios.interceptors.request.use(
   (config) => {
+    // 取消：找出相同的api请求进行取消（url与method相同）
+    cancelArr = cancelArr.filter(item => {
+      if (item.url === config.url && item.method === config.method) {
+        item.fn()
+        return false
+      }
+      return true
+    })
+    // 不取消拦截某些请求
+    // if (!config.noCancel) {
+    //   config.cancelToken = new axios.CancelToken((cancelFN) => {
+    //     // 存储取消方法
+    //     cancelArr.push({ url: config.url, method: config.method, fn: cancelFN })
+    //   })
+    // }
+    config.cancelToken = new axios.CancelToken((cancelFn) => {
+      // 存储取消方法
+      cancelArr.push({ url: config.url, method: config.method, fn: cancelFn })
+    })
     config.headers.Authorization = `Bearer ${store.state.user.token}`
     return config
   }, (error) => {
@@ -48,7 +76,7 @@ _axios.interceptors.response.use(
     * 3.跳转到登录页
     * 4.中止.then执行，执行.catch（抛出错误）
     *  */
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       store.commit('user/logout')
       // token失效跳转登陆页面时，也要传入地址
       router.push('/login?redirect=' + window.location.href.split('#')[1])

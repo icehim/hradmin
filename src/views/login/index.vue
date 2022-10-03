@@ -13,6 +13,7 @@
         </el-form-item>
         <el-form-item>
           <el-button style="width: 100%; background:#407ffe" :loading="loading" @click="submit">登录</el-button>
+          <!--<el-button style="width: 100%; background:#407ffe" @click="submit">登录</el-button>-->
         </el-form-item>
       </el-form>
     </div>

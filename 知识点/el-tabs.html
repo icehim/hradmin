@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>el-tabs</title>
 </head>
 <body>
-
+<div id="app">
+<!--
+  el-tabs
+    v-model="对应的el-tab-pane的name的值"，修改选中的tab的值
+    el-tab-pane name="对应的v-model的值" label:标题 lazy:是否延迟渲染(第一次点击后才渲染)
+-->
+  <el-tabs v-model="activeName">
+    <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+    <el-tab-pane label="公司信息" name="second">公司信息</el-tab-pane>
+  </el-tabs>
+</div>
+<script src="./vue.js"></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+/>
+<script src="./element.js"></script>
+<!-- 引入样式 -->
+<!-- 引入组件库 -->
+<script>
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        activeName:'second'
+      }
+    },
+    methods: {}
+  })
+</script>
 </body>
 </html>
