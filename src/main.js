@@ -22,6 +22,11 @@ import '@/permission' // 引入导航守卫
 import useTest from '@/components/test/useTest'
 // 全局自定义指令
 import directives from '@/directives'
+import filters from '@/filters'
+
+Object.keys(filters).forEach(item => {
+  Vue.filter(item, filters[item])
+})
 
 Vue.use(useTest, 123)
 // 对象循环
