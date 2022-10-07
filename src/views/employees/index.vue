@@ -10,7 +10,7 @@
     <el-card class="top-card">
       <div class="btn">
         <el-button type="primary">导入</el-button>
-        <el-button type="primary">+ 新增员工</el-button>
+        <el-button type="primary" @click="addEvent">+ 新增员工</el-button>
       </div>
     </el-card>
     <el-card>
@@ -117,13 +117,19 @@
         />
       </div>
     </el-card>
+    <!--新增弹框组件-->
+    <Add ref="add" />
   </div>
 </template>
 
 <script>
 import { sysUser } from '@/api/employees'
 import employeesData from '@/api/constant/employees'
+import Add from '@/views/employees/components/add'
 export default {
+  components: {
+    Add
+  },
   filters: {
     // formatterForOf(str) {
     //   const result = employeesData.hireType.find(item => {
@@ -201,6 +207,10 @@ export default {
       })
       // 通过返回值取出相应的字符值
       return result ? result.value : ' ---'
+    },
+    // 新增点击事件
+    addEvent() {
+      this.$refs.add.isShow = true
     }
   }
 }
