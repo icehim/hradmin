@@ -31,7 +31,6 @@
 
         <!--2.通过过滤器转换-->
         <!--        <el-table-column label="聘用形式" sortable prop="formOfEmployment">-->
-
         <!--
           过滤器:作用：字符转换 特点:不能使用this,它只能用于{{}}}与v-bind
           1):定义(全局,局部)
@@ -93,14 +92,23 @@
         <el-table-column label="入职时间" sortable prop="timeOfEntry" />
         <el-table-column label="状态" sortable prop="enableState" />
         <el-table-column label="操作" width="300" fixed="right">
-          <template>
+          <template v-slot="{row}">
             <div>
               <el-button type="text">查看</el-button>
               <el-button type="text">转正</el-button>
               <el-button type="text">调岗</el-button>
               <el-button type="text">离职</el-button>
               <el-button type="text">角色</el-button>
-              <el-button type="text">删除</el-button>
+              <!--
+                1.确认框
+                2.定义api
+                3.导入
+                4.点击确定后调用
+                5.调用成功
+                  a:提示
+                  b:刷新列表数据，回到第一页
+                -->
+              <el-button type="text" @click="del(row.id)">删除</el-button>
             </div>
           </template>
         </el-table-column>
@@ -118,7 +126,7 @@
       </div>
     </el-card>
     <!--新增弹框组件-->
-    <Add ref="add" />
+    <Add ref="add" @getData="getData" />
   </div>
 </template>
 
@@ -126,6 +134,8 @@
 import { sysUser } from '@/api/employees'
 import employeesData from '@/api/constant/employees'
 import Add from '@/views/employees/components/add'
+// moment 时间转换 moment(时间值).format('yyyy-mm-dd')
+import moment from 'moment'
 export default {
   components: {
     Add
@@ -140,22 +150,22 @@ export default {
     // }
   },
   directives: {
-    formOfEmployment: {
-      inserted(dom, obj) {
-        const result = employeesData.hireType.find(item => {
-          return item.id === obj.value
-        })
-        const resultStr = result ? result.value : ' ---'
-        dom.innerText = resultStr
-      },
-      componentUpdated(dom, obj) {
-        const result = employeesData.hireType.find(item => {
-          return item.id === obj.value
-        })
-        const resultStr = result ? result.value : ' ---'
-        dom.innerText = resultStr
-      }
-    }
+    // formOfEmployment: {
+    //   inserted(dom, obj) {
+    //     const result = employeesData.hireType.find(item => {
+    //       return item.id === obj.value
+    //     })
+    //     const resultStr = result ? result.value : ' ---'
+    //     dom.innerText = resultStr
+    //   },
+    //   componentUpdated(dom, obj) {
+    //     const result = employeesData.hireType.find(item => {
+    //       return item.id === obj.value
+    //     })
+    //     const resultStr = result ? result.value : ' ---'
+    //     dom.innerText = resultStr
+    //   }
+    // }
   },
   data() {
     return {
@@ -178,10 +188,11 @@ export default {
       // 复杂数据类型，使用该数据的地方只要有一个地方(堆)改了，使用该引用的地方都会变
       res.data.rows.forEach(item => {
         const result = employeesData.hireType.find(item2 => {
-          return item2.id === item.formOfEmployment
+          return item2.id === +item.formOfEmployment
         })
         const resultStr = result ? result.value : ' ---'
         item.formOfEmployment = resultStr
+        item.timeOfEntry = moment(item.timeOfEntry).format('YYYY-MM-DD')
       })
       this.list = res.data.rows
       this.page.total = res.data.total
@@ -212,6 +223,7 @@ export default {
     addEvent() {
       this.$refs.add.isShow = true
     }
+    // 删除点击
   }
 }
 </script>

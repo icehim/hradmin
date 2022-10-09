@@ -6,3 +6,11 @@ export function sysUser(params) {
     params
   })
 }
+// 新增员工
+export function sysUserPost(data) {
+  return request({
+    url: '/sys/user',
+    method: 'post',
+    data
+  })
+}

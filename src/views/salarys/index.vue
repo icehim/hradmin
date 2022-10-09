@@ -9,7 +9,9 @@
 -->
     <!--sona传值给sonb-->
     <sona />
-    <sonb />
+    <span ref="span">
+      <sonb />
+    </span>
   </div>
 </template>
 
@@ -19,10 +21,27 @@ import sona from '@/views/salarys/components/Sona'
 
 export default {
 
-  name: 'Index',
   components: {
     sona,
     sonb
+  },
+  mounted() {
+    document.addEventListener('click', this.documentClick)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.documentClick)
+  },
+  methods: {
+    documentClick(e) {
+      // 点击项dom：e.target
+      //  span的dom:this.$refs.span
+      // 判断span的dom是否包含（contains）点击项的dom
+      if (this.$refs.span.contains(e.target)) {
+        console.log('点击了span')
+      } else {
+        console.log('span之外')
+      }
+    }
   }
 }
 </script>

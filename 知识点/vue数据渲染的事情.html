@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+</head>
+<body>
+<!--
+vue的渲染小缺点
+对象:原有属性修改他能自动更新，新增树形不会自动更新
+数组:vue只能监听能修改原数组的方法，其他的修改监听不到
+不能更新=》官方解决方案
+  this.$set(对象，属性名，修改后的值)
+  =>通用解决方案(静默刷新)
+    只要数据没有响应式更新都可解决
+    在想更新的dom上加入 v-if="boolean"值，默认=“true”
+    this.bol = false
+    this.$nextTick(()=>{
+      this.bol = true
+    })
+    它能还原组件成初始状态
+-->
+<div id="app" v-if="bol">
+  <h3>{{obj}}</h3>
+
+  <button @click="btnClick">修改obj</button>
+  <hr>
+  <h3>{{arr}}</h3>
+
+  <button @click="btnClick2">修改arr</button>
+</div>
+
+<script src="./vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+<script src="./element.js"></script>
+<script>
+  new Vue({
+    el:'#app',
+    data () {
+      return {
+        bol:true,
+        obj:{
+          a:1
+        },
+        arr:[1,2,3]
+      }
+    },
+    methods: {
+      btnClick(){
+        // this.obj.a++
+        this.obj.b = Date.now()
+        // this.$set(this.obj,'b',Date.now())
+        this.bol = false
+        this.$nextTick(()=>{
+          this.bol = true
+        })
+        // console.log(this.obj)
+      },
+      btnClick2(){
+        this.arr[0]=Date.now()
+        // this.$set(this.arr,0,Date.now())
+        this.bol = false
+        this.$nextTick(()=>{
+          this.bol = true
+        })
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <template>
   <div class="son">我是son
+    <h1>{{ sonNum }}</h1>
     <el-button @click="btnClick">子获取父组件实例对象</el-button></div>
 </template>
 
@@ -12,7 +13,8 @@ export default {
   },
   methods: {
     btnClick() {
-      console.log(this.$parent)
+      // console.log(this.$parent)
+      this.sonNum++
     }
   }
 }
