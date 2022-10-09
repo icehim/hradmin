@@ -14,3 +14,13 @@ export function sysUserPost(data) {
     data
   })
 }
+
+// 删除员工
+export function sysUserDelete(id) {
+  return request({
+    // url: '/sys/user/' + id,
+    url: `/sys/user/${id}`,
+    method: 'delete'
+
+  })
+}

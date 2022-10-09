@@ -131,11 +131,14 @@
 </template>
 
 <script>
-import { sysUser } from '@/api/employees'
+import { sysUser, sysUserDelete } from '@/api/employees'
 import employeesData from '@/api/constant/employees'
 import Add from '@/views/employees/components/add'
 // moment 时间转换 moment(时间值).format('yyyy-mm-dd')
 import moment from 'moment'
+import cookieJs from 'js-cookie'
+//  js-cooke: get:获取  set:设置  remove:删除
+
 export default {
   components: {
     Add
@@ -173,7 +176,7 @@ export default {
       employeesData,
       page: {
         total: 100,
-        size: 5,
+        size: +cookieJs.get('size') || 5, // 页容量数据持久化
         page: 1
       }
     }
@@ -199,6 +202,7 @@ export default {
     },
     sizeChange(size) {
       this.page.size = size
+      cookieJs.set('size', size)
       this.page.page = 1
       this.getData()
     },
@@ -222,8 +226,15 @@ export default {
     // 新增点击事件
     addEvent() {
       this.$refs.add.isShow = true
-    }
+    },
     // 删除点击
+    del(id) {
+      this.$confirm('您确定要删除该用户吗？', '提示').then(async() => {
+        await sysUserDelete(id)
+        this.$message.success('删除成功')
+        this.pageChange(1)
+      })
+    }
   }
 }
 </script>
