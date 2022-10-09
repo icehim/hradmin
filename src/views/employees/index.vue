@@ -9,7 +9,17 @@
 -->
     <el-card class="top-card">
       <div class="btn">
-        <el-button type="primary">导入</el-button>
+        <!--
+    1.创建一个新的页面用于实现excel导入
+      a:创建vue组件
+      b:配置路由
+      c:点击跳转
+    2.修改上传组建的央视
+      a:先创建上传组件
+      b:在新页面使用
+      c:修改样式
+-->
+        <el-button type="primary" @click="importClick">导入</el-button>
         <el-button type="primary" @click="addEvent">+ 新增员工</el-button>
       </div>
     </el-card>
@@ -94,7 +104,21 @@
         <el-table-column label="操作" width="300" fixed="right">
           <template v-slot="{row}">
             <div>
-              <el-button type="text">查看</el-button>
+              <!--
+    1.创建页面
+      a.创建页面所对应组件
+      b.配置路由
+      c.点击跳转
+    2.跳转过去时需要带上该用户的id，通过动态路由配置传递id
+      配置路由:{
+        path:'/xxx地址/:id?'  ?id 可传可不传，不加'?'就一定要传
+      }
+      传：
+        this.$router.push('/xxx地址/123')
+      收：
+        this.$route.params.id===123
+-->
+              <el-button type="text" @click="goDetail(row.id)">查看</el-button>
               <el-button type="text">转正</el-button>
               <el-button type="text">调岗</el-button>
               <el-button type="text">离职</el-button>
@@ -234,6 +258,13 @@ export default {
         this.$message.success('删除成功')
         this.pageChange(1)
       })
+    },
+    importClick() {
+      this.$router.push('/employees/import')
+    },
+    // 详情跳转
+    goDetail(id) {
+      this.$router.push('/employees/detail/' + id)
     }
   }
 }

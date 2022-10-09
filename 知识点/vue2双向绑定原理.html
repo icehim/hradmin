@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue双向绑定原理</title>
+</head>
+<body>
+<div class="app">
+  <span id="span"></span>
+  <input type="text" id="input" >
+</div>
+<script>
+  let data = {
+    num:''
+  }
+  //双向绑定数据有什么特性:get set 方法
+  //数据原有的树形修改html会响应式变化，但是新增属性不会
+  let _num = data.num
+  Object.defineProperty(data,'num',{
+    //  获取是调用get，设置时调用set
+    get(){
+      return _num
+    },
+    set(value){
+      // console.log('set')
+      _num = value
+      document.querySelector('#span').innerText = value
+      document.querySelector('#input').value = value
+    }
+  })
+  document.querySelector('#input').oninput = function(e) {
+    data.num = e.target.value
+  }
+  data.num = 123
+  console.log(data.num)
+</script>
+</body>
+</html>

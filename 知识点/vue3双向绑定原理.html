@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue3双向绑定原理</title>
+</head>
+<body>
+<div class="app">
+  <span id="span"></span>
+  <input type="text" id="input" >
+</div>
+<script>
+  let data = {
+    num:''
+  }
+  const newData = new Proxy(data,{
+    get(obj,key){
+      console.log('get')
+      return obj[key]
+    },
+    set(obj,key,value){
+      console.log('set')
+      obj[key] = value
+      if (key==='num'){
+        document.querySelector('#span').innerText = value
+        document.querySelector('#input').value = value
+      }
+    }
+  })
+  document.querySelector('#input').oninput = function(e) {
+    newData.num = e.target.value
+  }
+  newData.xxx = 123
+  // console.log(newData.num)
+</script>
+</body>
+</html>

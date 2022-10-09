@@ -24,3 +24,20 @@ export function sysUserDelete(id) {
 
   })
 }
+
+// 批量导入
+export function sysUserBatch(data) {
+  return request({
+    url: `/sys/user/batch`,
+    method: 'post',
+    data
+  })
+}
+// 修改用户基本信息
+export function sysUserPut(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}

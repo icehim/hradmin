@@ -23,6 +23,8 @@ import useTest from '@/components/test/useTest'
 // 全局自定义指令
 import directives from '@/directives'
 import filters from '@/filters'
+import libjs from '@/components/lib/lib'
+Vue.use(libjs)
 
 Object.keys(filters).forEach(item => {
   Vue.filter(item, filters[item])

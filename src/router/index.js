@@ -71,14 +71,32 @@ export const constantRoutes = [
   {
     path: '/employees',
     component: Layout,
-    children: [{
-      path: '',
-      name: 'employees',
-      // hidden: true, // 是否菜单渲染
-      component: () => import('@/views/employees/index'),
-      // 路由元
-      meta: { title: '员工', icon: 'people' }
-    }]
+    children: [
+      {
+        path: '',
+        name: 'employees',
+        // hidden: true, // 是否菜单渲染
+        component: () => import('@/views/employees/index'),
+        // 路由元
+        meta: { title: '员工', icon: 'people' }
+      },
+      {
+        path: 'import', //  /employees/import
+        name: 'import',
+        // hidden: true, // 是否菜单渲染
+        component: () => import('@/views/employees/import'),
+        meta: {},
+        hidden: true // 不在菜单中显示
+      },
+      {
+        path: 'detail/:id', //  /employees/import
+        name: 'detail',
+        // hidden: true, // 是否菜单渲染
+        component: () => import('@/views/employees/detail'),
+        meta: {},
+        hidden: true // 不在菜单中显示
+      }
+    ]
   },
   {
     path: '/setting',

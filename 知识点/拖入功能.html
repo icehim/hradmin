@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <style>
+    .box{
+      width: 300px;
+      height: 300px;
+      background-color: #f00;
+    }
+  </style>
+</head>
+<body>
+<div id="app" >
+<div
+  class="box"
+  @drop.stop.prevent="handleDrop"
+  @dragover.stop.prevent="handleDragover"
+  @dragenter.stop.prevent="handleDeagover">
+</div>
+</div>
+<script src="./vue.js"></script>
+<script>
+  new Vue({
+    el:'#app',
+    data(){
+      return {
+        test: 'test111'
+      }
+    },
+    methods: {
+      handleDragover(e){
+        // console.log(e)
+      },
+      handleDrop(e){
+        console.log(e.dataTransfer.files[0])
+      }
+    }
+  })
+</script>
+</body>
+</html>
