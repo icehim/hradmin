@@ -57,6 +57,7 @@
       <el-row class="inline-info">
         <el-col :span="12">
           <el-form-item label="员工头像">
+            <UploadImg v-model="userInfo.staffPhoto" />
             <!-- 放置上传图片 -->
 
           </el-form-item>
@@ -90,6 +91,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <UploadImg v-model="formData.staffPhoto" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">

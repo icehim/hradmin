@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vue动画</title>
+  <style>
+    .box{
+      width: 200px;
+      height: 200px;
+      background-color: #ff0000;
+      margin: 0 auto;
+    }
+    .move-enter{
+      opacity: 0;
+      transform: translateX(-200px);
+    }
+    .move-enter-active{
+      transition: all 1.5s;
+    }
+    .move-leave-to{
+      opacity: 0;
+      transform: translateX(200px);
+    }
+    .move-leave-active{
+      transition: all 0.5s;
+    }
+  </style>
+</head>
+<body>
+<!--
+  动画:
+    条件:进入、离开动作
+    使用:
+      1.用transition标签包住
+      2.在transition加入name属性，name的值就是后面动画css的前缀
+        .xxx-enter:进入时希望从 什么状态=》正常状态
+        .xxx-enter-active:进入动画的执行体,承载transition/animation
+        .xxx-leave-to:离开时希望从  正常状态=》什么状态
+        .xxx-leave-active:离开动画的执行体,承载transition/animation
+        mode="out-in":两个元素同时存在切换时使用
+        默认是同时执行，out-in：先离开在进入   in-out:先进入在离开
+-->
+<div id="app">
+  <button @click="bol=!bol">切换</button>
+  <transition name="move">
+  <div class="box" v-if="bol"></div>
+  </transition>
+</div>
+<script src="./vue.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+<script src="./element.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data () {
+      return {
+        bol:true
+      }
+    },
+    methods: {
+    }
+  })
+</script>
+</body>
+</html>
