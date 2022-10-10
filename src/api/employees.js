@@ -41,3 +41,33 @@ export function sysUserPut(data) {
     data
   })
 }
+// 获取员工个人详情
+export function employeesPersonalInfo(id) {
+  return request({
+    url: `/employees/${id}/personalInfo`
+  })
+}
+
+//  修改员工个人详情
+export function employeesPersonalInfoPut(data) {
+  return request({
+    url: `/employees/${data.userId}/personalInfo`,
+    method: 'put',
+    data
+  })
+}
+// 获取员工岗位详情
+export function employeesJobs(id) {
+  return request({
+    url: `/employees/${id}/jobs`
+  })
+}
+// 修改员工岗位详情
+export function employeesJobsPut(data) {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'put',
+    data
+  })
+}
+

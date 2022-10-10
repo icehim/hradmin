@@ -20,6 +20,14 @@
       c:修改样式
 -->
         <el-button type="primary" @click="importClick">导入</el-button>
+        <el-button type="primary" @click="outputClick">导出</el-button>
+        <!--
+  1.vender文件夹复制到src下
+  2.下载  npm i file-saver  插件
+  3.导出点击事件中调用插件的的导出方法
+  4.配置相应传入的数据实现下载
+
+  -->
         <el-button type="primary" @click="addEvent">+ 新增员工</el-button>
       </div>
     </el-card>
@@ -265,6 +273,57 @@ export default {
     // 详情跳转
     goDetail(id) {
       this.$router.push('/employees/detail/' + id)
+    },
+    // 导出功能
+    async outputClick() {
+      const header = {
+        姓名: 'username',	// string	非必须
+        手机号: 'mobile',	// string	非必须
+        入职时间: 'timeOfEntry',	// string	非必须
+        聘用形式: 'formOfEmployment',	// number	非必须
+        工号: 'workNumber',	// string	非必须
+        组织名称: 'departmentName',	// string	非必须
+        转正时间: 'correctionTim'	// string	非必须
+
+      }
+      //  data数据,需求是将list数据数组中每一项(对象)中的值按header的次序一次取出
+      //  拿到所有数据
+      const res = await sysUser({
+        page: 1,
+        size: 10000
+      })
+      // 复杂数据类型，使用该数据的地方只要有一个地方(堆)改了，使用该引用的地方都会变
+      res.data.rows.forEach(item => {
+        const result = employeesData.hireType.find(item2 => {
+          return item2.id === +item.formOfEmployment
+        })
+        const resultStr = result ? result.value : ' ---'
+        item.formOfEmployment = resultStr
+        item.timeOfEntry = moment(item.timeOfEntry).format('YYYY-MM-DD')
+      })
+
+      // 循环整个列表数据:为了产生一个只有值的二位数组[[值]]，他的数据次序要按照头部数组次序来
+      const data = res.data.rows.map(item => {
+        // const arr = []
+        // Object.keys(header).forEach(item2 => {
+        //   arr.push(item[header[item2]])
+        // })
+        // return arr
+        //  循环头部数据
+        return Object.keys(header).map(item2 => {
+          // 按照次序return相应项的值，最终产生按次序的新数组
+          return item[header[item2]]
+        })
+      })
+      import('@/vendor/Export2Excel')
+        .then(res => {
+          res.export_json_to_excel({
+            header: Object.keys(header),
+            data,
+            filename: '员工列表'
+          })
+        })
+        .catch(() => {})
     }
   }
 }

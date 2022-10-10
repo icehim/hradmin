@@ -302,7 +302,7 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
-import { sysUserPut } from '@/api/employees'
+import { sysUserPut, employeesPersonalInfo, employeesPersonalInfoPut } from '@/api/employees'
 export default {
   props: {
     userInfo: { type: Object, default: () => ({}) }
@@ -376,15 +376,23 @@ export default {
       }
     }
   },
+  created() {
+    this.getData()
+  },
   methods: {
+    async getData() {
+      const res = await employeesPersonalInfo(this.userId)
+      this.formData = res.data
+    },
     async saveUser() {
       await sysUserPut(this.userInfo)
       this.$message.success('修改成功')
       // 用户密码修改页的用户名也要保持同步
       this.$emit('setUserName', this.userInfo.username)
     },
-    savePersonal() {
-
+    async savePersonal() {
+      await employeesPersonalInfoPut(this.formData)
+      this.$message.success('修改成功')
     }
   }
 }

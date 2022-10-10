@@ -28,10 +28,26 @@
             </el-form-item>
           </el-form>
         </el-tab-pane>
-        <el-tab-pane label="个人详情">
-          <Info :user-info="initUserInfo" @setUserName="setUserName" />
+        <el-tab-pane label="个人详情" lazy>
+          <!--<Info :user-info="initUserInfo" @setUserName="setUserName" />-->
+          <component :is="'Info'" :user-info="initUserInfo" @setUserName="setUserName" />
         </el-tab-pane>
-        <el-tab-pane label="岗位信息">岗位信息</el-tab-pane>
+        <el-tab-pane label="岗位信息" lazy>
+          <!--
+            1.组件创建
+            2.异步组件结合动态组件使用
+            3.调用接口获取数据并渲染
+              a:定义api
+              b:导入api
+              c:调用存储
+            4.修改
+              a:定义修改api
+              b:导入
+              c:调用
+              d:调用完成，提示
+          -->
+
+          <component :is="'Job'" /></el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -41,10 +57,12 @@
 // Object(...)这个错误都是来自于import，常见的{}没写,名字写错了
 import { sysUser } from '@/api/user'
 import { sysUserPut } from '@/api/employees'
-import Info from './components/info'
 export default {
   components: {
-    Info
+    //  异步组件加载
+    //  异步组件与动态组件结合
+    Info: () => import('./components/info'),
+    Job: () => import('./components/job')
   },
   data() {
     return {
