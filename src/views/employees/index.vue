@@ -1,33 +1,32 @@
 <template>
   <div class="employees">
     <!--
-    查：
-    1.定义api
-    2.导入
-    3.进入页面就调用，存储数据并渲染
-    4.与分页建立联系
--->
+      查：
+      1.定义api
+      2.导入
+      3.进入页面就调用，存储数据并渲染
+      4.与分页建立联系
+    -->
     <el-card class="top-card">
       <div class="btn">
         <!--
-    1.创建一个新的页面用于实现excel导入
-      a:创建vue组件
-      b:配置路由
-      c:点击跳转
-    2.修改上传组建的央视
-      a:先创建上传组件
-      b:在新页面使用
-      c:修改样式
--->
+          1.创建一个新的页面用于实现excel导入
+            a:创建vue组件
+            b:配置路由
+            c:点击跳转
+          2.修改上传组建的央视
+            a:先创建上传组件
+            b:在新页面使用
+            c:修改样式
+        -->
         <el-button type="primary" @click="importClick">导入</el-button>
         <el-button type="primary" @click="outputClick">导出</el-button>
         <!--
-  1.vender文件夹复制到src下
-  2.下载  npm i file-saver  插件
-  3.导出点击事件中调用插件的的导出方法
-  4.配置相应传入的数据实现下载
-
-  -->
+          1.vender文件夹复制到src下
+          2.下载  npm i file-saver  插件
+          3.导出点击事件中调用插件的的导出方法
+          4.配置相应传入的数据实现下载
+        -->
         <el-button type="primary" @click="addEvent">+ 新增员工</el-button>
       </div>
     </el-card>
@@ -41,6 +40,20 @@
           </template>
         </el-table-column>
         <el-table-column label="姓名" sortable prop="username" />
+        <el-table-column label="相片" sortable prop="staffPhoto">
+          <template v-slot="{row}">
+            <!--
+              生成二维码
+              1.点击打开弹框
+                a:创建弹框
+                b:定义一个显示与隐藏的变量值
+                c:点击时该值位true
+              2.弹框内显示一个二维码
+                二维码对应的字符就是图片地址
+            -->
+            <img v-globalImageError="defaultImg" class="avatar" :src="row.staffPhoto" @click="imgClick(row.staffPhoto)">
+          </template>
+        </el-table-column>
         <el-table-column label="手机号" sortable prop="mobile" />
         <el-table-column label="工号" sortable prop="workNumber" />
         <!--转换聘用形式-->
@@ -48,7 +61,7 @@
         <!--<el-table-column label="聘用形式" sortable prop="formOfEmployment" :formatter="formatter">-->
 
         <!--2.通过过滤器转换-->
-        <!--        <el-table-column label="聘用形式" sortable prop="formOfEmployment">-->
+        <!--<el-table-column label="聘用形式" sortable prop="formOfEmployment">-->
         <!--
           过滤器:作用：字符转换 特点:不能使用this,它只能用于{{}}}与v-bind
           1):定义(全局,局部)
@@ -105,7 +118,6 @@
           4.在渲染前转换
         -->
         <el-table-column label="聘用形式" sortable prop="formOfEmployment" />
-
         <el-table-column label="部门" sortable prop="departmentName" />
         <el-table-column label="入职时间" sortable prop="timeOfEntry" />
         <el-table-column label="状态" sortable prop="enableState" />
@@ -113,19 +125,19 @@
           <template v-slot="{row}">
             <div>
               <!--
-    1.创建页面
-      a.创建页面所对应组件
-      b.配置路由
-      c.点击跳转
-    2.跳转过去时需要带上该用户的id，通过动态路由配置传递id
-      配置路由:{
-        path:'/xxx地址/:id?'  ?id 可传可不传，不加'?'就一定要传
-      }
-      传：
-        this.$router.push('/xxx地址/123')
-      收：
-        this.$route.params.id===123
--->
+                1.创建页面
+                  a.创建页面所对应组件
+                  b.配置路由
+                  c.点击跳转
+                2.跳转过去时需要带上该用户的id，通过动态路由配置传递id
+                  配置路由:{
+                    path:'/xxx地址/:id?'  ?id 可传可不传，不加'?'就一定要传
+                  }
+                  传：
+                    this.$router.push('/xxx地址/123')
+                  收：
+                    this.$route.params.id===123
+              -->
               <el-button type="text" @click="goDetail(row.id)">查看</el-button>
               <el-button type="text">转正</el-button>
               <el-button type="text">调岗</el-button>
@@ -159,6 +171,13 @@
     </el-card>
     <!--新增弹框组件-->
     <Add ref="add" @getData="getData" />
+    <!--二维码弹框组件-->
+    <el-dialog title="二维码" width="500px" :visible.sync="show">
+      <!--el-dialog内的默认插槽在第一次打开后才渲染-->
+      <div style="text-align: center">
+        <canvas ref="canvas" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -170,7 +189,7 @@ import Add from '@/views/employees/components/add'
 import moment from 'moment'
 import cookieJs from 'js-cookie'
 //  js-cooke: get:获取  set:设置  remove:删除
-
+import Qrcode from 'qrcode'
 export default {
   components: {
     Add
@@ -204,6 +223,8 @@ export default {
   },
   data() {
     return {
+      show: false,
+      defaultImg: require('@/assets/common/head.jpg'),
       list: [{}],
       employeesData,
       page: {
@@ -230,6 +251,7 @@ export default {
         item.timeOfEntry = moment(item.timeOfEntry).format('YYYY-MM-DD')
       })
       this.list = res.data.rows
+      console.log(this.list)
       this.page.total = res.data.total
     },
     sizeChange(size) {
@@ -323,7 +345,18 @@ export default {
             filename: '员工列表'
           })
         })
-        .catch(() => {})
+        .catch(() => {
+        })
+    },
+    // 图片生成二维码
+    imgClick(url) {
+      if (!url) {
+        return
+      }
+      this.show = true
+      this.$nextTick(() => {
+        Qrcode.toCanvas(this.$refs.canvas, url, { width: 300, height: 300 })
+      })
     }
   }
 }
@@ -344,6 +377,12 @@ export default {
   .page {
     padding-top: 15px;
     text-align: right;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
   }
 }
 </style>

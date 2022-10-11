@@ -24,6 +24,8 @@ import useTest from '@/components/test/useTest'
 import directives from '@/directives'
 import filters from '@/filters'
 import libjs from '@/components/lib/lib'
+import Print from 'vue-print-nb'
+Vue.use(Print)
 Vue.use(libjs)
 
 Object.keys(filters).forEach(item => {

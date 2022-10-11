@@ -2,72 +2,75 @@
   <div class="user-info">
     <!-- 个人信息 -->
     <el-form label-width="220px">
-      <!-- 工号 入职时间 -->
-      <el-row class="inline-info">
-        <el-col :span="12">
-          <el-form-item label="工号">
-            <el-input v-model="userInfo.workNumber" class="inputW" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="入职时间">
-            <el-date-picker
-              v-model="userInfo.timeOfEntry"
-              type="date"
-              class="inputW"
-              value-format="YYYY-MM-DD"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- 姓名 部门 -->
-      <el-row class="inline-info">
-        <el-col :span="12">
-          <el-form-item label="姓名">
-            <el-input v-model="userInfo.username" class="inputW" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="部门">
-            <el-input v-model="userInfo.departmentName" class="inputW" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!--手机 聘用形式  -->
-      <el-row class="inline-info">
-        <el-col :span="12">
-          <el-form-item label="手机">
-            <el-input v-model="userInfo.mobile" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="聘用形式">
-            <el-select v-model="userInfo.formOfEmployment" class="inputW">
-              <el-option
-                v-for="item in EmployeeEnum.hireType"
-                :key="item.id"
-                :label="item.value"
-                :value="item.id"
+      <div id="print">
+        <!-- 工号 入职时间 -->
+        <el-row class="inline-info">
+          <el-col :span="12">
+            <el-form-item label="工号">
+              <el-input v-model="userInfo.workNumber" class="inputW" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="入职时间">
+              <el-date-picker
+                v-model="userInfo.timeOfEntry"
+                type="date"
+                class="inputW"
+                value-format="YYYY-MM-DD"
               />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- 员工照片 -->
-      <el-row class="inline-info">
-        <el-col :span="12">
-          <el-form-item label="员工头像">
-            <UploadImg v-model="userInfo.staffPhoto" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- 姓名 部门 -->
+        <el-row class="inline-info">
+          <el-col :span="12">
+            <el-form-item label="姓名">
+              <el-input v-model="userInfo.username" class="inputW" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="部门">
+              <el-input v-model="userInfo.departmentName" class="inputW" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--手机 聘用形式  -->
+        <el-row class="inline-info">
+          <el-col :span="12">
+            <el-form-item label="手机">
+              <el-input v-model="userInfo.mobile" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="聘用形式">
+              <el-select v-model="userInfo.formOfEmployment" class="inputW">
+                <el-option
+                  v-for="item in EmployeeEnum.hireType"
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!-- 员工照片 -->
+        <el-row class="inline-info">
+          <el-col :span="12">
+            <el-form-item label="员工头像">
+              <UploadImg v-model="userInfo.staffPhoto" />
             <!-- 放置上传图片 -->
 
-          </el-form-item>
-        </el-col>
-      </el-row>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </div>
       <!-- 保存个人信息 -->
       <el-row class="inline-info" type="flex" justify="center">
         <el-col :span="12">
           <el-button type="primary" @click="saveUser">保存更新</el-button>
           <el-button @click="$router.back()">返回</el-button>
+          <el-button v-print="{id:'print'}">打印</el-button>
 
         </el-col>
       </el-row>
