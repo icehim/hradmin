@@ -115,3 +115,12 @@ export function param2Obj(url) {
   })
   return obj
 }
+// 树形数据转换
+export function changeData(arr, pid) {
+  return arr.filter(item => {
+    if (item.pid === pid) {
+      item.children = changeData(arr, item.id)
+      return true
+    }
+  })
+}

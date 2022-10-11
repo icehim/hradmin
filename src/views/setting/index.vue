@@ -66,7 +66,26 @@
             <el-table-column label="操作">
               <template v-slot="{row}">
                 <div>
-                  <el-button type="text">分配权限</el-button>
+                  <!--
+                    1.创建一个弹框组件
+                    2.使用组件
+                    3.点击打开
+                    4.所有的权限数据展示(树形展示，可勾选)
+                      el-tree显示数据
+                      a:导入api
+                      b:调用获取所有数据
+                      c：转换成树形结构
+                      d:渲染出来
+                    5.权限数据回显
+                      获取当前角色的详情
+                        a:定义获取角色详情api
+                        b:导入弹框组件
+                        c:定义一个方法用户获取详情
+                        d:打开弹框是调用
+                        e:渲染数据
+                    6.修改提示
+                  -->
+                  <el-button type="text" @click="setClick(row.id)">分配权限</el-button>
                   <el-button type="text" @click="edit(row)">修改</el-button>
                   <el-button type="text" @click="del(row.id)">删除</el-button>
                 </div>
@@ -94,6 +113,8 @@
     <!--新增弹框组件-->
     <!--    <Add ref="add" v-model="show" />-->
     <Add ref="add" :show.sync="show" @getData="getData" />
+    <!--权限分配弹框-->
+    <PermissionSet ref="permissionSet" />
   </div>
 </template>
 
@@ -101,8 +122,10 @@
 import Info from '@/views/setting/components/info'
 import { sysRole, sysRoleDelete } from '@/api/setting'
 import Add from '@/views/setting/components/add'
+import PermissionSet from '@/views/setting/components/permissionSet'
 export default {
   components: {
+    PermissionSet,
     Info,
     Add
   },
@@ -161,6 +184,11 @@ export default {
       this.show = true
       this.$refs.add.mode = 'edit'
       this.$refs.add.form = JSON.parse(JSON.stringify(row))
+    },
+    // 分配权限
+    setClick(id) {
+      this.$refs.permissionSet.isShow = true
+      this.$refs.permissionSet.getRoleInfo(id)
     }
   }
 }

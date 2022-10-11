@@ -70,4 +70,14 @@ export function employeesJobsPut(data) {
     data
   })
 }
-
+// 员工分配角色api
+export function sysUserAssignRoles(id, roleIds) {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'put',
+    data: {
+      id,
+      roleIds
+    }
+  })
+}

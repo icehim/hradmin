@@ -36,3 +36,20 @@ export function sysRolePut(data) {
     data
   })
 }
+// 角色详情
+export function sysRoleId(id) {
+  return request({
+    url: '/sys/role/' + id
+  })
+}
+// 为角色分配权限数据
+export function sysRoleAssignPrem(id, permIds) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data: {
+      id,
+      permIds
+    }
+  })
+}

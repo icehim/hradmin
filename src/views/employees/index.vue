@@ -142,7 +142,17 @@
               <el-button type="text">转正</el-button>
               <el-button type="text">调岗</el-button>
               <el-button type="text">离职</el-button>
-              <el-button type="text">角色</el-button>
+              <!--
+                1.创建一个角色弹框组件
+                2.在父组件使用
+                3.角色列表显示(多选框显示)
+                  a:调用接口获取所有角色
+                4.当前点击账号所拥有的角色的回显
+                  调用当前接口获取当前账号所拥有的角色
+                5.修改提示
+                  调用接口
+              -->
+              <el-button type="text" @click="roleClick(row.id)">角色</el-button>
               <!--
                 1.确认框
                 2.定义api
@@ -178,6 +188,8 @@
         <canvas ref="canvas" />
       </div>
     </el-dialog>
+    <!--分配角色弹框-->
+    <Role ref="role" :is-show.sync="isShow" />
   </div>
 </template>
 
@@ -190,9 +202,11 @@ import moment from 'moment'
 import cookieJs from 'js-cookie'
 //  js-cooke: get:获取  set:设置  remove:删除
 import Qrcode from 'qrcode'
+import Role from '@/views/employees/components/role'
 export default {
   components: {
-    Add
+    Add,
+    Role
   },
   filters: {
     // formatterForOf(str) {
@@ -223,6 +237,7 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       show: false,
       defaultImg: require('@/assets/common/head.jpg'),
       list: [{}],
@@ -357,6 +372,13 @@ export default {
       this.$nextTick(() => {
         Qrcode.toCanvas(this.$refs.canvas, url, { width: 300, height: 300 })
       })
+    },
+    // 分配角色点击事件
+    roleClick(id) {
+      // 打开角色弹框
+      this.isShow = true
+      //  调用api方法获取详情
+      this.$refs.role.getUserInfo(id)
     }
   }
 }
