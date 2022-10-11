@@ -105,9 +105,9 @@ export default {
             this.loading = false
           }
         }
-      }, (err, data) => {
+      }, (data) => {
         // 上传成功的回调  err:代表错误，没有错误就代表成功  data：上传成功的接口返回值
-        console.log(err || data)
+        // console.log(err || data)
         this.$emit('input', 'http://' + data.Location)
         // this.imageUrl = 'http://' + data.Location
       })

@@ -251,7 +251,7 @@ export default {
         item.timeOfEntry = moment(item.timeOfEntry).format('YYYY-MM-DD')
       })
       this.list = res.data.rows
-      console.log(this.list)
+      // console.log(this.list)
       this.page.total = res.data.total
     },
     sizeChange(size) {

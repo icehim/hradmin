@@ -77,7 +77,7 @@ export default {
       return file
     },
     handleAvatarSuccess(res, file) {
-      console.log(res, file)
+      // console.log(res, file)
     },
     httpRequest(res) {
       cos.putObject({
@@ -88,11 +88,11 @@ export default {
         Body: res.file, // 上传文件对象
         onProgress: (progressData) => {
           // 上传进度
-          console.log(JSON.stringify(progressData))
+          // console.log(JSON.stringify(progressData))
         }
-      }, (err, data) => {
+      }, (data) => {
         // 上传成功的回调  err:代表错误，没有错误就代表成功  data：上传成功的接口返回值
-        console.log(err || data)
+        // console.log(err || data)
         this.imageUrl = 'http://' + data.Location
       })
     }
