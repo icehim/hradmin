@@ -8,6 +8,7 @@
       人力后台
     </div>
     <div class="navbar-user">
+      <Fullscreen style="margin-right: 15px" />
       <el-dropdown @command="commandEvent">
         <span class="menu">
           <!--使用自定义指定解决图片出错问题，同时默认图片可以自定义指定-->
@@ -30,6 +31,8 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
+  components: {},
+
   // 局部自定义指令
   directives: {
     imgerror: {
@@ -124,6 +127,8 @@ export default {
     }
     .navbar-user {
       margin-right: 20px;
+      display: flex;
+      align-items: center;
       .menu {
         display: flex;
         align-items: center;

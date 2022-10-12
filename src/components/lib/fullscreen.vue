@@ -1,22 +1,19 @@
 <template>
-  <div>审批
-    <button @click="btnClick">全屏切换</button>
-
+  <div>
+    <svg-icon icon-class="fullscreen" @click="svgClick" />
   </div>
 </template>
 
 <script>
 import screenfull from 'screenfull'
 export default {
-  created() {
-    console.log(screenfull)
-  },
+  name: 'Fullscreen',
   methods: {
-    btnClick() {
+    svgClick() {
       if (screenfull.isEnabled) {
         screenfull.toggle()
       } else {
-        this.$message.error('当前浏览器不支持全屏')
+        this.$message.error('该浏览器不支持全屏')
       }
     }
   }
