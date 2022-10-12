@@ -21,6 +21,7 @@ router.beforeEach(async(to, from, next) => {
   *   进入的页面是白名单页面=》正常进入
   *   进入的页面是非白名单页面=》跳转到登录页
   *  */
+  // Nprogress顶部进度条
   Nprogress.start()
   if (store.state.user.token) {
     if (to.path.toLowerCase() === '/login') {

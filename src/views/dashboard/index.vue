@@ -1,8 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <Test />
-    <Xxx />
-    <Abc :num="5" :obj="{a:1}" />
+    <el-calendar v-model="value" />
   </div>
 </template>
 
@@ -11,6 +9,11 @@
 
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      value: new Date()
+    }
+  },
   computed: {}
 }
 </script>

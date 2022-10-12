@@ -90,7 +90,7 @@ export const syncRoutes = [
       // hidden: true, // 是否菜单渲染
       component: () => import('@/views/departments/index'),
       // 路由元
-      meta: { title: '组织架构', icon: 'tree' }
+      meta: { title: 'route.departments', icon: 'tree' }
     }]
   },
   {

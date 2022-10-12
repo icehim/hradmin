@@ -9,6 +9,7 @@
     </div>
     <div class="navbar-user">
       <Fullscreen style="margin-right: 15px" />
+      <Lang style="margin-right: 15px" />
       <el-dropdown @command="commandEvent">
         <span class="menu">
           <!--使用自定义指定解决图片出错问题，同时默认图片可以自定义指定-->
@@ -30,8 +31,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import Lang from '@/components/lib/lang'
+import Fullscreen from '@/components/lib/fullscreen'
 export default {
-  components: {},
+  components: { Lang, Fullscreen },
 
   // 局部自定义指令
   directives: {

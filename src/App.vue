@@ -1,12 +1,31 @@
 <template>
   <div id="app">
-    <router-view />
+    <router-view v-if="bol" />
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    return {
+      bol: true
+    }
+  },
+  provide() {
+    return {
+      appNum: 1,
+      reload: this.reload
+    }
+  },
+  methods: {
+    reload() {
+      this.bol = false
+      this.$nextTick(() => {
+        this.bol = true
+      })
+    }
+  }
 }
 </script>
