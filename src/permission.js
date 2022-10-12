@@ -31,7 +31,8 @@ router.beforeEach(async(to, from, next) => {
       } else {
         await store.dispatch('user/getUserInfo')
         // next后面的代码还是会执行 actions内方法调用是异步
-        next()
+        // fullpath带有参数
+        next(to.fullPath)
       }
     }
   } else {

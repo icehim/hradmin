@@ -1,3 +1,4 @@
+import store from '@/store'
 export default {
   // 指令名:生命周期
   globalImageError: {
@@ -30,5 +31,26 @@ export default {
     unbind(dom, obj, vnode) {
       document.removeEventListener('click', vnode.fn)
     }
+  },
+  // 按钮权限管理
+  buttonshow: {
+    inserted(dom, obj, vnode) {
+      setBtn(dom, obj)
+    },
+    componentUpdated(dom, obj) {
+      setBtn(dom, obj)
+    }
+  }
+}
+function setBtn(dom, obj) {
+  // 按钮权限数据中包含对应权限字段
+  if (store.state.user.userInfo.roles.points.includes(obj.value)) {
+    if (obj.arg === 'inlineBlock') {
+      dom.style.display = 'inline-block'
+    } else {
+      dom.style.display = 'block'
+    }
+  } else {
+    dom.style.display = 'none'
   }
 }

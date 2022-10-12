@@ -35,8 +35,8 @@
         <el-table-column label="操作" width="450px">
           <template v-slot="{row}">
             <div>
-              <el-button type="text" @click="addEvent(1,row.id)">添加权限页面</el-button>
-              <el-button type="text" @click="addEvent(2,row.id)">添加权限按钮</el-button>
+              <el-button v-if="row.type===1" type="text" @click="addEvent(1,row.id)">添加权限页面</el-button>
+              <el-button v-if="row.type===1" type="text" @click="addEvent(2,row.id)">添加权限按钮</el-button>
               <!--
                 编辑:
                   1.点击编辑打开弹框组件
@@ -109,6 +109,7 @@ export default {
     // 新增点击
     addEvent(type, pid) {
       this.show = true
+      this.$refs.add.mode = 'add'
       this.$refs.add.form.type = type
       this.$refs.add.form.pid = pid
     },

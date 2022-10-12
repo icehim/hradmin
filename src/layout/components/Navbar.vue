@@ -91,8 +91,10 @@ export default {
               // 点击确定后执行的处理
               // 删除token
               // 删除用户信息
+              // 重置路由
               this.$store.commit('user/logout')
               this.$message.success('退出成功')
+
               // 退出登陆时，传入回跳地址
               this.$router.push('/login?redirect=' + this.$route.fullPath) // fullPath带参数的path地址
             })

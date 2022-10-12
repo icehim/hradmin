@@ -31,7 +31,9 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      // this.$router.options.routes是一个非相式数据，通过vuex管理u送有点额routes
+      // return this.$router.options.routes
+      return this.$store.state.routes.routes
     },
     activeMenu() {
       const route = this.$route

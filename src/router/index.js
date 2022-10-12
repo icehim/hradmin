@@ -30,6 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 静态路由
 export const constantRoutes = [
   {
     path: '/login',
@@ -55,10 +56,34 @@ export const constantRoutes = [
       // 路由元
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
-  },
+  }
+  // {
+  //   path: '/permission',
+  //   meta: {
+  //     name: 'permissions'
+  //   },
+  //   component: Layout,
+  //   children: [{
+  //     path: '',
+  //     name: 'approvals',
+  //     // hidden: true, // 是否菜单渲染
+  //     component: () => import('@/views/permission/index'),
+  //     // 路由元
+  //     meta: { title: '权限管理', icon: 'lock' }
+  //   }]
+  // }
+
+  // 404 page must be placed at the end !!!
+  // { path: '*', redirect: '/404', hidden: true }
+]
+// 动态路由
+export const syncRoutes = [
   {
     path: '/departments',
     component: Layout,
+    meta: {
+      name: 'departments'
+    },
     children: [{
       path: '',
       name: 'departments',
@@ -71,6 +96,9 @@ export const constantRoutes = [
   {
     path: '/employees',
     component: Layout,
+    meta: {
+      name: 'employees'
+    },
     children: [
       {
         path: '',
@@ -101,6 +129,9 @@ export const constantRoutes = [
   {
     path: '/setting',
     component: Layout,
+    meta: {
+      name: 'settings'
+    },
     children: [{
       path: '',
       name: 'setting',
@@ -113,6 +144,9 @@ export const constantRoutes = [
   {
     path: '/salarys',
     component: Layout,
+    meta: {
+      name: 'salarys'
+    },
     children: [{
       path: '',
       name: 'salarys',
@@ -125,6 +159,9 @@ export const constantRoutes = [
   {
     path: '/social',
     component: Layout,
+    meta: {
+      name: 'social_securitys'
+    },
     children: [{
       path: '',
       name: 'social',
@@ -137,6 +174,9 @@ export const constantRoutes = [
   {
     path: '/attendances',
     component: Layout,
+    meta: {
+      name: 'attendances'
+    },
     children: [{
       path: '',
       name: 'attendances',
@@ -149,6 +189,9 @@ export const constantRoutes = [
   {
     path: '/approvals',
     component: Layout,
+    meta: {
+      name: 'approvals'
+    },
     children: [{
       path: '',
       name: 'approvals',
@@ -160,6 +203,9 @@ export const constantRoutes = [
   },
   {
     path: '/permission',
+    meta: {
+      name: 'permissions'
+    },
     component: Layout,
     children: [{
       path: '',
@@ -169,20 +215,20 @@ export const constantRoutes = [
       // 路由元
       meta: { title: '权限管理', icon: 'lock' }
     }]
-  },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
+  // routes: [...constantRoutes, ...syncRoutes]
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+// 重置路由
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

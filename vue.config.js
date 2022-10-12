@@ -40,6 +40,7 @@ module.exports = {
       '/xxx': {
         // target会拼接/xxx，最终使用的基地址：http://119.91.150.211:3000/api/xxx
         target: 'http://119.91.150.211:3000/api',
+        // target: 'http://ihrm-java.itheima.net/api',
         pathRewrite: {
           // 去掉/xxx
           '^/xxx': ''

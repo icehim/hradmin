@@ -7,7 +7,10 @@
 * 删除:remove(key)
 *  */
 import { sysLogin, sysProfile, sysUser } from '@/api/user'
+import { syncRoutes, constantRoutes } from '@/router'
 // import { getToken, setToken } from '@/utils/auth'
+import router from '@/router'
+import { resetRouter } from '@/router'
 const state = {
   token: '',
   userInfo: ''
@@ -23,6 +26,7 @@ const mutations = {
   logout(state) {
     state.token = ''
     state.userInfo = ''
+    resetRouter()
   }
 }
 const actions = {
@@ -68,7 +72,28 @@ const actions = {
     *  */
     // console.log(res2)
     // store.commit('setUserInfo', { ...res.data, ...res2.data })
-    store.commit('setUserInfo', Object.assign({}, res.data, res2.data))
+    const info = Object.assign({}, res.data, res2.data)
+    store.commit('setUserInfo', info)
+    //  动态添加路由
+    // 先匹配出应该天际的路由
+    // 动态路由与权限数据
+    // 权限数据info.roles.menus
+    // 动态路由在
+    // 动态路由过滤，当前项的mate.name值在权限数据中存在
+    const newArr = syncRoutes.filter(item => {
+      return info.roles.menus.includes(item.meta.name)
+    })
+    newArr.push({ path: '*', redirect: '/404', hidden: true })
+    // 动态添加相应路由
+    //  当前模块调用其他模块的mutations方法
+    // commit('模块名/方法名'，参数值,{root:true})
+    store.commit('routes/setRoutes', [...constantRoutes, ...newArr], { root: true })
+    router.addRoutes(newArr)
+    // addRoutes:坑点
+    //  path与fullPath区别：path带上参数
+    //  1.刚添加的路由不能立马使用，再经过一次导航守卫就可以用了 next(to.fullPath)
+    //  2.404的全局匹配要放到动态路由添加内
+    // console.log(newArr)
   }
 }
 const getters = {}

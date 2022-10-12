@@ -19,8 +19,9 @@
             b:在新页面使用
             c:修改样式
         -->
-        <el-button type="primary" @click="importClick">导入</el-button>
-        <el-button type="primary" @click="outputClick">导出</el-button>
+        <!--<el-button v-if="$store.state.user.userInfo.roles.points.includes('employees_importBtn')" type="primary" @click="importClick">导入</el-button>-->
+        <el-button v-buttonshow:inlineBlock="'employees_importBtn'" type="primary" @click="importClick">导入</el-button>
+        <el-button v-buttonshow:inlineBlock="'employees_outputBtn'" type="primary" @click="outputClick">导出</el-button>
         <!--
           1.vender文件夹复制到src下
           2.下载  npm i file-saver  插件
