@@ -29,7 +29,7 @@ Vue.use(Print)
 Vue.use(libjs)
 
 Object.keys(filters).forEach(item => {
-  Vue.filter(item, filters[item])
+  Vue.filter(item, filters[item])// filter过滤器
 })
 
 Vue.use(useTest, 123)
@@ -81,9 +81,9 @@ Vue.prototype.$bus = new Vue()
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
+  el: '#app', // 自动挂载到id为app的dom中 $mount是手动挂载
+  router, // 挂载路由
+  store, // 挂载vuex
   i18n,
-  render: h => h(App)
+  render: h => h(App)// h函数就是vue中的createElement方法，这个函数作用就是创建虚拟dom，追踪dom变化的。。
 })

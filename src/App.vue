@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!--路由出口-->
     <router-view v-if="bol" />
   </div>
 </template>
