@@ -12,7 +12,7 @@
 >
 > 克隆源码➡package.json所属文件下npm i下载依赖，之后npm run dev运行，node18以上运行npm run dev_t
 >
-> 在http://localhost:8888访问项目
+> 在  http://localhost:8888     访问项目
 
 ## 系统展示
 
