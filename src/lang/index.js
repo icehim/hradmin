@@ -8,7 +8,7 @@ import zh from './zh'
 import cookieJs from 'js-cookie'
 Vue.use(VueI18n)
 const i18n = new VueI18n({
-  locale: cookieJs.get('lang') || 'en', // zh：中文 en:代表英文
+  locale: cookieJs.get('lang') || 'zh', // zh：中文 en:代表英文
   messages: {
     zh: {
       h: '首页',
