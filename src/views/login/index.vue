@@ -26,8 +26,8 @@ export default {
     return {
       loading: false,
       form: {
-        mobile: '',
-        password: ''
+        mobile: '13800000002',
+        password: '123456'
       },
       rules: {
         mobile: [
